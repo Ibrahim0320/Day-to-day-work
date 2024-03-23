@@ -1,0 +1,10 @@
+from Absenteeism_module import *
+import pandas as pd
+
+data= pd.read_csv('Absenteeism_new_data.csv')
+
+model= absenteeism_model('model', 'scaler')
+
+model.load_and_clean_data('Absenteeism_new_data.csv')
+print(model.predicted_outputs())
+
