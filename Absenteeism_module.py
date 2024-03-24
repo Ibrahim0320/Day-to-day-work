@@ -35,6 +35,7 @@ class absenteeism_model():
                 self.reg = pickle.load(model_file)
                 self.scaler = pickle.load(scaler_file)
                 self.data = None
+        
         # take a data file (*.csv) and preprocess it in the same way as in the lectures
         def load_and_clean_data(self, data_file):
             
@@ -49,8 +50,8 @@ class absenteeism_model():
 
             # create a separate dataframe, containing dummy values for ALL avaiable reasons
             reason_columns = pd.get_dummies(df['Reason for Absence'], drop_first = True)
-
- # split reason_columns into 4 types
+            
+            # split reason_columns into 4 types
             reason_type_1 = reason_columns.loc[:,1:14].max(axis=1)
             reason_type_2 = reason_columns.loc[:,15:17].max(axis=1)
             reason_type_3 = reason_columns.loc[:,18:21].max(axis=1)
@@ -99,7 +100,9 @@ class absenteeism_model():
                                 'Daily Work Load Average', 'Body Mass Index', 'Education', 'Children',
                                 'Pet', 'Absenteeism Time in Hours']
             df = df[column_names_upd]
- # map 'Education' variables; the result is a dummy
+
+
+            # map 'Education' variables; the result is a dummy
             df['Education'] = df['Education'].map({1:0, 2:1, 3:1, 4:1})
 
             # replace the NaN values
@@ -128,8 +131,7 @@ class absenteeism_model():
             if (self.data is not None):
                 pred_outputs = self.reg.predict(self.data)
                 return pred_outputs
-
-
+        
         # predict the outputs and the probabilities and 
         # add columns with these values at the end of the new data
         def predicted_outputs(self):
@@ -137,3 +139,4 @@ class absenteeism_model():
                 self.preprocessed_data['Probability'] = self.reg.predict_proba(self.data)[:,1]
                 self.preprocessed_data ['Prediction'] = self.reg.predict(self.data)
                 return self.preprocessed_data
+
